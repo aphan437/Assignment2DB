@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS READBOOK;
 CREATE TABLE USER (
     email VARCHAR(30) PRIMARY KEY,
     date_added DATE,
-    nickname VARCHAR(20),
+    nickname VARCHAR(20) UNIQUE,
     profile VARCHAR(20)
 ) ENGINE InnoDB;
 
@@ -49,12 +49,12 @@ CREATE TABLE READBOOK (
 INSERT INTO USER (email, date_added, nickname, profile) VALUES
 ('alice@mail.com', '2023-01-01', 'Alice', 'Reader'),
 ('bob@mail.com', '2023-01-02', 'Bob', 'Enthusiast'),
-('carol@mail.com', '2023-01-03', 'Carol', 'Novice'),
+('carol@mail.com', '2023-01-03', 'Carol', NULL),
 ('dave@mail.com', '2023-01-04', 'Dave', 'Scholar'),
 ('eve@mail.com', '2023-01-05', 'Eve', 'Critic'),
 ('frank@mail.com', '2023-01-06', 'Frank', 'Collector'),
 ('grace@mail.com', '2023-01-07', 'Grace', 'Librarian'),
-('heidi@mail.com', '2023-01-08', 'Heidi', 'Historian'),
+('heidi@mail.com', '2023-01-08', NULL, 'Historian'),
 ('ivan@mail.com', '2023-01-09', 'Ivan', 'Student'),
 ('judy@mail.com', '2023-01-10', 'Judy', 'Professor');
 
@@ -74,17 +74,18 @@ INSERT INTO AUTHOR (last_name, first_name, middle_name) VALUES
 ('Smith', 'John', NULL),
 ('Johnson', 'Jane', 'Doe'),
 ('Williams', 'Gary', NULL),
-('Brown', 'Lisa', 'Marie'),
+(NULL, 'Lisa', 'Marie'),
 ('Jones', 'Chris', NULL),
 ('Garcia', 'Maria', NULL),
 ('Miller', 'David', 'Lee'),
 ('Davis', 'Angela', NULL),
-('Rodriguez', 'Jose', NULL),
+(NULL, 'Jose', NULL),
 ('Martinez', 'Patricia', 'Ann'),
 ('Hernandez', 'Luis', NULL);
 
 INSERT INTO BOOKAUTHOR (author_id, book_id) VALUES
-(1, 1),
+(1, 1), 
+(2, 1),
 (2, 2), 
 (3, 3), 
 (4, 4),
@@ -107,6 +108,7 @@ INSERT INTO READBOOK (book_id, email, date_read, rating) VALUES
 (8, 'heidi@mail.com', '2023-03-08', 9),
 (9, 'ivan@mail.com', '2023-03-09', 7),
 (10, 'judy@mail.com', '2023-03-10', 6);
+
 
 
 /* ------ After inserting a READBOOK entry, update BOOK table rating ------ */
@@ -142,4 +144,5 @@ CREATE INDEX idx_date_read ON READBOOK(date_read);
 /* ------ create a view for easy access of the list of books with their average rating and number of raters ------ */
 CREATE VIEW BookDetails AS
 SELECT b.book_id, b.book_year, b.num_raters, b.rating
-FROM BOOK b;
+FROM BOOK AS b;
+*/
