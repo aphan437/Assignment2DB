@@ -1,10 +1,15 @@
-use aphan437;
-DROP TABLE IF EXISTS USER;
-DROP TABLE IF EXISTS BOOK;
-DROP TABLE IF EXISTS AUTHOR;
+use nbrar891;
+
+
 DROP TABLE IF EXISTS BOOKAUTHOR;
 DROP TABLE IF EXISTS READBOOK;
+DROP TABLE IF EXISTS AUTHOR;
+DROP TABLE IF EXISTS BOOK;
+DROP TABLE IF EXISTS USER;
 
+
+-- ALTER TABLE USER DROP INDEX IF EXISTS idx_date_read;
+-- DROP VIEW IF EXISTS BookDetails;
 
 CREATE TABLE USER (
     email VARCHAR(30) PRIMARY KEY,
@@ -59,16 +64,16 @@ INSERT INTO USER (email, date_added, nickname, profile) VALUES
 ('judy@mail.com', '2023-01-10', 'Judy', 'Professor');
 
 INSERT INTO BOOK (book_year, num_raters, rating) VALUES
-(2001, 0, 0.0),
-(2002, 0, 0.0),
-(2003, 0, 0.0),
-(2004, 0, 0.0),
-(2005, 0, 0.0),
-(2006, 0, 0.0),
-(2007, 0, 0.0),
-(2008, 0, 0.0),
-(2009, 0, 0.0),
-(2010, 0, 0.0);
+(2001, 1, 7.0),
+(2002, 2, 6.4),
+(2003, 3, 5.3),
+(2004, 4, 6.7),
+(2005, 5, 6.9),
+(2006, 7, 7.9),
+(2007, 9, 9.1),
+(2008, 10, 3.2),
+(2009, 2, 4.0),
+(2010, 3, 9.0);
 
 INSERT INTO AUTHOR (last_name, first_name, middle_name) VALUES
 ('Smith', 'John', NULL),
@@ -108,9 +113,27 @@ INSERT INTO READBOOK (book_id, email, date_read, rating) VALUES
 (8, 'heidi@mail.com', '2023-03-08', 9),
 (9, 'ivan@mail.com', '2023-03-09', 7),
 (10, 'judy@mail.com', '2023-03-10', 6);
+-- (10,'nbnb@mail.com','2024-03-11',9);
+
+
+
+-- Test Cases
+INSERT INTO READBOOK (book_id, email, date_read, rating) VALUES
+(10,'nbnb@mail.com','2024-03-11',9);
+SELECT * FROM BOOK WHERE book_id = 10;
+DELETE FROM READBOOK WHERE book_id =10;
+SELECT * FROM BOOK  WHERE book_id =10;
+
+
+INSERT INTO AUTHOR (last_name, first_name, middle_name) VALUES
+('Breton', 'Jacob', NULL);
+
+INSERT INTO BOOKAUTHOR (author_id, book_id) VALUES
+(2, 3)
 
 DROP TRIGGER IF EXISTS after_readbook_insert;
 DROP TRIGGER IF EXISTS after_readbook_delete;
+
 
 /* ------ After inserting a READBOOK entry, update BOOK table rating ------ */
 DELIMITER $$
@@ -142,8 +165,10 @@ DELIMITER ;
 /* ------ create an index for faster lookups of READBOOK by date_read ------ */
 CREATE INDEX idx_date_read ON READBOOK(date_read);
 
-DROP VIEW IF EXISTS BookDetails;
+
 /* ------ create a view for easy access of the list of books with their average rating and number of raters ------ */
 CREATE VIEW BookDetails AS
 SELECT b.book_id, b.book_year, b.num_raters, b.rating
 FROM BOOK AS b;
+
+
