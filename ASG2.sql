@@ -1,4 +1,4 @@
-use jbret088;
+use aphan437;
 DROP TABLE IF EXISTS USER;
 DROP TABLE IF EXISTS BOOK;
 DROP TABLE IF EXISTS AUTHOR;
@@ -109,7 +109,8 @@ INSERT INTO READBOOK (book_id, email, date_read, rating) VALUES
 (9, 'ivan@mail.com', '2023-03-09', 7),
 (10, 'judy@mail.com', '2023-03-10', 6);
 
-
+DROP TRIGGER IF EXISTS after_readbook_insert;
+DROP TRIGGER IF EXISTS after_readbook_delete;
 
 /* ------ After inserting a READBOOK entry, update BOOK table rating ------ */
 DELIMITER $$
@@ -141,8 +142,8 @@ DELIMITER ;
 /* ------ create an index for faster lookups of READBOOK by date_read ------ */
 CREATE INDEX idx_date_read ON READBOOK(date_read);
 
+DROP VIEW IF EXISTS BookDetails;
 /* ------ create a view for easy access of the list of books with their average rating and number of raters ------ */
 CREATE VIEW BookDetails AS
 SELECT b.book_id, b.book_year, b.num_raters, b.rating
 FROM BOOK AS b;
-*/
