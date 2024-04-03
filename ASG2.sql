@@ -1,5 +1,5 @@
 use nbrar891;
-
+-- Jacob Breton, Nimrat Brar, Andrew Phan
 
 DROP TABLE IF EXISTS BOOKAUTHOR;
 DROP TABLE IF EXISTS READBOOK;
@@ -9,7 +9,6 @@ DROP TABLE IF EXISTS USER;
 
 
 -- ALTER TABLE USER DROP INDEX IF EXISTS idx_date_read;
--- DROP VIEW IF EXISTS BookDetails;
 
 CREATE TABLE USER (
     email VARCHAR(30) PRIMARY KEY,
@@ -119,7 +118,7 @@ INSERT INTO READBOOK (book_id, email, date_read, rating) VALUES
 
 -- Test Cases
 INSERT INTO READBOOK (book_id, email, date_read, rating) VALUES
-(10,'nbnb@mail.com','2024-03-11',9);
+(10,'nbnb@mail.com','2024-03-11',9); -- Does not work for some reason
 SELECT * FROM BOOK WHERE book_id = 10;
 DELETE FROM READBOOK WHERE book_id =10;
 SELECT * FROM BOOK  WHERE book_id =10;
@@ -167,6 +166,7 @@ CREATE INDEX idx_date_read ON READBOOK(date_read);
 
 
 /* ------ create a view for easy access of the list of books with their average rating and number of raters ------ */
+DROP VIEW IF EXISTS BookDetails;
 CREATE VIEW BookDetails AS
 SELECT b.book_id, b.book_year, b.num_raters, b.rating
 FROM BOOK AS b;
